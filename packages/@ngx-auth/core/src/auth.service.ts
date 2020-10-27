@@ -38,16 +38,13 @@ export class AuthService {
     this._token = currentUser && currentUser.token;
   }
 
-  authenticate(username: string, password: string): Observable<boolean> {
+  authenticate(model): Observable<boolean> {
     const params = this.getHttpParams(this.loader.backend.params);
 
     return this.http
       .post<any>(
         this.loader.backend.endpoint,
-        JSON.stringify({
-          username,
-          password
-        }),
+        model,
         { params }
       )
       .pipe(
@@ -60,7 +57,7 @@ export class AuthService {
             this.loader.storage.setItem(
               this.loader.storageKey,
               JSON.stringify({
-                username,
+                model.username,
                 token
               })
             );
